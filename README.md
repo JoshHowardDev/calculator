@@ -1,1 +1,1 @@
-# calculator
+This applet provides a functioning calculator, per the requirements and directions in The Odin Project, Foundations, Javascript Basics, Project: Calculator.
