@@ -70,7 +70,12 @@ function operate(num1, num2, operatorOption) {
             evaluation = add(num1, num2);
             break;            
     }
-    return Math.round(evaluation * 100000000) / 100000000;
+
+    if (evaluation === Infinity) {
+
+    }
+
+    return Math.round(evaluation * 10000000) / 10000000;
 }   
 
 function processInput(input) {
@@ -79,6 +84,23 @@ function processInput(input) {
         input = input.key.toString();
     } else {
         input = this.id.toString();
+    }
+
+    //Adjust for duplicate decimals
+    if (input === "." || input === "Period") {
+        if (operator) {
+            if (operand2Decimal) {
+                input = '';
+            } else {
+                operand2Decimal = true;
+            }
+        } else {
+            if (operand1Decimal) {
+                input = ''
+            } else {
+                operand1Decimal = true;
+            }
+        }
     }
 
     //If input is a number
@@ -130,6 +152,8 @@ function processInput(input) {
             operand1 = operate(Number(operand1), Number(operand2), operator).toString();
             operator = '';
             operand2 = '';
+            operand1Decimal = false;
+            operand2Decimal = false;
             operand1Reset = true;
         } else {
             operator = ''
@@ -149,7 +173,6 @@ function populateDisplay() {
 
     //Update display variable
     let displayContent = `${operand1}${(operator) ? ' ' + operators[operator] : ''}${(operand2) ? ' ' : ''}${operand2}`;
-
     //If operators and operands are empty, change dipslay to 0
     if (displayContent) {
         displayBox.textContent = displayContent;
@@ -164,6 +187,8 @@ function clearCalculator() {
     operator = ''
     operand1Reset = false;
     lastEdit = ''
+    operand1Decimal = false;
+    operand2Decimal = false;
     equalsBtn.focus();
     populateDisplay();
 }
